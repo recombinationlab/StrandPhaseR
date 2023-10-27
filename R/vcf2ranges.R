@@ -14,7 +14,7 @@ vcf2ranges <- function(vcfFile=NULL, genotypeField=1, chromosome=NULL) {
   
   ## Filter chromosomes to use	
   if (!is.null(chromosome)) { 	  
-	if ( grepl(vcf$V1[1], pattern = "^chr|^cluster") & grepl(chromosome[1], pattern = "^chr|^cluster") ) {	
+	if (length(vcf$V1[1])!=0 & length(chromosome[1])!=0) {	
 		vcf <- vcf[vcf$V1 %in% chromosome,]
 	} else {
 		stop('Specified chromosomes names do not match VCF chromosome names!!!')
