@@ -25,12 +25,15 @@ calcProb <- function(bases, quals) {
   for (i in 1:4) { #calculate phred score for each base (1:4)
     equal <- (1-10**(-quals[bases == i]/10)) # if base in bases if equals to tested base
     non.equal <- (1/3) * (10**(-quals[!bases == i]/10)) # if base in bases if not equals to tested base
-    prob <- prod(equal, non.equal) # multiply calculated probabilities
+    # prob <- prod(equal, non.equal) # multiply calculated probabilities
+    prob <- sum(log(equal), log(non.equal))
     probs[i] <- prob    
   }
-  probs <- probs/sum(probs) # normalize calculated probabilities by the sum of all probabilities
+  # probs <- probs/sum(probs) # normalize calculated probabilities by the sum of all probabilities
+  probs <- probs/prod(probs)
   cons <- which.max(probs) # get the base with max probability
-  score <- probs[which.max(probs)]#  get the values of max probability
+  # score <- probs[which.max(probs)]#  get the values of max probability
+  score <- exp(probs[which.max(probs)])
   return(list(cons,score))
 }
 
